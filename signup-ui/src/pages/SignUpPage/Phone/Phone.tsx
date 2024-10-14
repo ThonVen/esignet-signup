@@ -79,6 +79,7 @@ export const Phone = ({ settings, methods }: PhoneProps) => {
   );
 
   const [hasError, setHasError] = useState<boolean>(false);
+  //const [isOtpError, setIsOtpError] = useState<boolean>(false);
   const { control, setValue, getValues } = useFormContext();
   const { generateChallengeMutation } = useGenerateChallenge();
   const _reCaptchaRef = useRef<ReCAPTCHA>(null);
@@ -150,9 +151,11 @@ export const Phone = ({ settings, methods }: PhoneProps) => {
             if (errors.length > 0) {
               if (errors[0].errorCode === "invalid_transaction") {
                 setCriticalError(errors[0]);
+                //setIsOtpError(false); 
               } else {
                 setError(errors[0]);
                 setHasError(true);
+                //setIsOtpError(errors[0].errorCode.startsWith("otp_"));
               }
               _reCaptchaRef.current?.reset();
               setValue("captchaToken", "", { shouldValidate: true });
@@ -165,6 +168,7 @@ export const Phone = ({ settings, methods }: PhoneProps) => {
           },
           onError: () => {
             setHasError(true);
+            //setIsOtpError(false);
           },
         });
       }
